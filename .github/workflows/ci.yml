@@ -2,10 +2,6 @@ name: Flutter CI
 
 on: [push]
 
-env:
-  flutter-version: "3.0.5"
-  java-version: "12.x"
-
 jobs:
   # setup:
   #   runs-on: macos-12
@@ -27,8 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: ${{ inputs.flutter-version }}
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
       - run: flutter analyze .
