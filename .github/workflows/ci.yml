@@ -7,6 +7,13 @@ env:
   java-version: "12.x"
 
 jobs:
+  setup:
+    runs-on: macos-12
+    uses: ./.github/actions/setup/action.yml
+        with:
+          flutter-version: ${{ env.flutter-version }}
+          java-version: ${{ env.java-version }}
+          
   analyze:
     runs-on: macos-12
     defaults:
@@ -14,12 +21,6 @@ jobs:
         working-directory: ./coolmovies_mobile
 
     steps:
-      - name: flutter setup
-        uses: ./.github/actions/setup/action.yml
-        with:
-          flutter-version: ${{ env.flutter-version }}
-          java-version: ${{ env.java-version }}
-
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
       - run: flutter analyze .
