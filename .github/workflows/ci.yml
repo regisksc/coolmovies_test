@@ -15,8 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-
       - name: flutter setup
         uses: ./.github/actions/setup@v1
         with:
