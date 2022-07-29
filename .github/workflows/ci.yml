@@ -7,19 +7,29 @@ env:
   java-version: "12.x"
 
 jobs:
+  setup:
+    runs-on: macos-12
+      defaults:
+        run:
+          working-directory: ./coolmovies_mobile
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ inputs.java_version }}
+      - name: cache
+        uses: actions/cache@v1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.os }}-flutter
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ inputs.flutter-version }}
   analyze:
     runs-on: macos-12
     defaults:
       run:
         working-directory: ./coolmovies_mobile
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: flutter setup
-        uses: ./.github/actions/setup@v1
-        with:
-          flutter-version: ${{ env.flutter-version }}
-          java-version: ${{ env.java-version }}
 
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .

@@ -11,14 +11,3 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@v1
-        with:
-          java-version: ${{ inputs.java_version }}
-    - name: cache
-      uses: actions/cache@v1
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: ${{ runner.os }}-flutter
-    - uses: subosito/flutter-action@v1
-      with:
-        flutter-version: ${{ inputs.flutter-version }}
