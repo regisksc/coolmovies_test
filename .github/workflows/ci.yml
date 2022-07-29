@@ -7,26 +7,27 @@ env:
   java-version: "12.x"
 
 jobs:
-  setup:
-    runs-on: macos-12
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.java-version }}
-      - uses: actions/cache@v2
-        with:
-          path: ${{ runner.tool_cache }}/flutter
-          key: flutter-${{ env.flutter-version }}-stable
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: ${{ inputs.flutter-version }}
+  # setup:
+  #   runs-on: macos-12
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-java@v1
+  #       with:
+  #         java-version: ${{ env.java-version }}
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: ${{ runner.tool_cache }}/flutter
+  #         key: flutter-${{ env.flutter-version }}-stable
+  #     - uses: subosito/flutter-action@v1
+  #       with:
+  #         flutter-version: ${{ inputs.flutter-version }}
 
   analyze:
     runs-on: macos-12
-    needs:
-      - setup
     steps:
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ inputs.flutter-version }}
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
       - run: flutter analyze .
