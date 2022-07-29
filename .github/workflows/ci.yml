@@ -15,8 +15,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+
       - name: flutter setup
-        uses: ./.github/actions/setup/action.yml
+        uses: ./.github/actions/setup@v1
         with:
           flutter-version: ${{ env.flutter-version }}
           java-version: ${{ env.java-version }}
