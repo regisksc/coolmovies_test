@@ -21,7 +21,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     defaults:
-      runs:
+      run:
         working-directory: coolmovies_mobile
     steps:
       - uses: actions/checkout@v2
