@@ -17,8 +17,8 @@ jobs:
       - name: flutter setup
         uses: regisksc/coolmovies_challenge/.github/actions/setup/action.yml@main
         with:
-          - flutter-version: ${{ env.flutter-version }}
-          - flutter-version: ${{ env.java-version }}
+          flutter-version: ${{ env.flutter-version }}
+          flutter-version: ${{ env.java-version }}
 
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
