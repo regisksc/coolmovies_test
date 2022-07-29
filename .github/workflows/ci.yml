@@ -12,6 +12,10 @@ env:
 jobs:
   analyze:
     runs-on: macos-12
+    defaults:
+      run:
+        working-directory: ./coolmovies_mobile
+
     steps:
       - name: flutter setup
         uses: regisksc/coolmovies_challenge/.github/actions/setup/action.yml@main
