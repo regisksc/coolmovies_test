@@ -20,6 +20,9 @@ jobs:
 
   analyze:
     runs-on: ubuntu-latest
+    defaults:
+      runs:
+        working-directory: coolmovies_mobile
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
