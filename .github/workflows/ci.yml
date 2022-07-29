@@ -10,10 +10,10 @@ jobs:
   setup:
     runs-on: macos-12
     uses: ./.github/actions/setup/action.yml
-      with:
-        flutter-version: ${{ env.flutter-version }}
-        java-version: ${{ env.java-version }}
-        
+    with:
+      flutter-version: ${{ env.flutter-version }}
+      java-version: ${{ env.java-version }}
+
   analyze:
     runs-on: macos-12
     defaults:
