@@ -3,8 +3,8 @@ name: Flutter CI
 on: [push]
 
 env:
-  flutter_version: "3.0.5"
-  java_version: "12.x"
+  flutter-version: "3.0.5"
+  java-version: "12.x"
 
 jobs:
   analyze:
