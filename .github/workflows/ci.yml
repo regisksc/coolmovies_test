@@ -14,7 +14,6 @@ jobs:
         working-directory: ./coolmovies_mobile
 
     steps:
-      - uses: actions/checkout@v1
       - name: flutter setup
         uses: regisksc/coolmovies_challenge/.github/actions/setup/action.yml@main
         with:
