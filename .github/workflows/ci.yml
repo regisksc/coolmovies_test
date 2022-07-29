@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: flutter setup
-        uses: regisksc/coolmovies_challenge/.github/actions/setup/action.yml@main
+        uses: .github/actions/setup/action.yml
         with:
           flutter-version: ${{ env.flutter-version }}
           java-version: ${{ env.java-version }}
