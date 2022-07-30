@@ -26,8 +26,19 @@ jobs:
       - uses: subosito/flutter-action@v1
       - name: Generate test results
         run: |
+          ./scripts/runTests.sh
+          ./scripts/runCodeMetrics.sh
           flutter test --coverage
           flutter test --machine > test-results.json
+
+      - name: upload metrics html files
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-metrics
+          path: |
+            **/coverage
+            **/metrics
+
       - uses: dorny/test-reporter@v1.4.2
         with:
           name: test-results
