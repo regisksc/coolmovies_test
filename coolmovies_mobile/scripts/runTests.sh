@@ -6,6 +6,7 @@ sudo apt-get -y install lcov
 flutter pub global activate remove_from_coverage
 echo '############################### Go to Folder ################################'
 cd ./coolmovies_mobile
+ls
 flutter test --coverage
 echo '############################### Removing generated files #####################'
 flutter pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/core/error*' -r 'lib/core/transition*' -r 'navigator_service.dart'
