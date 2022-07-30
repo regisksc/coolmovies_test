@@ -1,16 +1,26 @@
-# coolmovies_mobile
+# Coolmovies mobile challenge
 
-A new Flutter project.
+You have to add the cool movies review feature to the existing `coolmovies-mobile`.
 
-## Getting Started
+This folder contains a basic Flutter application with some example callbacks.
 
-This project is a starting point for a Flutter application.
+We've setup GraphQL for you. We recommend that you work on an emulator only, there's no need to test your application in a real device.
 
-A few resources to get you started if this is your first Flutter project:
+## Acceptance Criteria
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**You will be evaluated on your UI/UX as we believe this is an important skill to have. Please put time and effort into this.**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**DO NOT USE EXISTING TEMPLATES. You can copy the design but not the code, we have to evaluate you by your coding skills.**
+
+For your solution to be accepted it is required that your application is able to:
+
+1. List all the available movies, showing at least the title
+2. Tapping on a movie must open a view page presenting all the available information to the user
+3. Each movie page must display all its reviews
+4. Each review should consist of (at least): title, body and stars (1-5)
+5. The user should be able to create new reviews
+6. The user should be able to edit their own reviews
+
+Anything else is up to you (animations, assets, 3rd party dependencies, etc). We will consider all your additions so don't stick to the minimum!
+
+Good luck!

@@ -1,7 +1,36 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+void main() async {
+  // We're using HiveStore for persistence,
+  // so we need to initialize Hive.
+  await initHiveForFlutter();
+
+  final HttpLink httpLink = HttpLink(
+    Platform.isAndroid
+        ? 'http://10.0.2.2:5001/graphql'
+        : 'http://localhost:5001/graphql',
+  );
+
+  final AuthLink authLink = AuthLink(
+    getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
+  );
+
+  final Link link = authLink.concat(httpLink);
+
+  final client = ValueNotifier(
+    GraphQLClient(
+      link: link,
+      cache: GraphQLCache(store: HiveStore()),
+    ),
+  );
+
+  runApp(GraphQLProvider(
+    client: client,
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +53,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Coolmovies'),
     );
   }
 }
@@ -48,6 +77,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final ValueNotifier<Map<String, dynamic>?> _data = ValueNotifier(null);
   int _counter = 0;
 
   void _incrementCounter() {
@@ -59,6 +89,42 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future _fetchData() async {
+    debugPrint('Fetching data...');
+    final client = GraphQLProvider.of(context).value;
+
+    final QueryResult result = await client.query(QueryOptions(
+      document: gql(r"""
+          query AllMovies {
+            allMovies {
+              nodes {
+                id
+                imgUrl
+                movieDirectorId
+                userCreatorId
+                title
+                releaseDate
+                nodeId
+                userByUserCreatorId {
+                  id
+                  name
+                  nodeId
+                }
+              }
+            }
+          }
+        """),
+    ));
+
+    if (result.hasException) {
+      debugPrint(result.exception.toString());
+    }
+
+    if (result.data != null) {
+      _data.value = result.data!['allMovies'] as Map<String, dynamic>;
+    }
   }
 
   @override
@@ -75,40 +141,74 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Center(
+            child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.only(top: 36.0),
+                  child: Text(
+                    """
+Thank you for taking the time to take our test. We really appreciate it.
+All the information on what is required can be found in the README at the root of this repo.
+Please dont spend ages on this and just get through as much of it as you can.
+Good luck! :)""",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextButton.icon(
+                  onPressed: _incrementCounter,
+                  icon: const Icon(Icons.add),
+                  label: Text('Increment: $_counter'),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.blue,
+                  ),
+                ),
+                OutlinedButton.icon(
+                  onPressed: _fetchData,
+                  icon: const Icon(Icons.download),
+                  label: const Text('Fetch data'),
+                ),
+                const SizedBox(height: 16),
+                ValueListenableBuilder(
+                    valueListenable: _data,
+                    builder: (BuildContext context, Map<String, dynamic>? data,
+                        Widget? _) {
+                      return data != null
+                          ? Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  border:
+                                      Border.all(color: Colors.grey.shade700),
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Text(data.toString()),
+                            )
+                          : Container();
+                    }),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
