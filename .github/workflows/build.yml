@@ -6,11 +6,11 @@ on:
       - v*
 
 defaults:
-  runs-on: ubuntu-latest
   run:
     working-directory: coolmovies_mobile
 
 jobs:
+  runs-on: ubuntu-latest
   analyze:
     steps:
       - uses: actions/checkout@v2
@@ -21,6 +21,7 @@ jobs:
           flutter analyze .
 
   test:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
@@ -44,14 +45,15 @@ jobs:
           name: test-results
           path: coolmovies_mobile/test-results.json
           reporter: flutter-json
+
       - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: coolmovies_mobile/coverage/lcov.info
           min_coverage: 0
 
   build-apk:
-    name: Build .apk step
     runs-on: ubuntu-latest
+    name: Build .apk step
     needs:
       - analyze
       - test
