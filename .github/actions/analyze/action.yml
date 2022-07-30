@@ -3,16 +3,16 @@ name: Code static analysis
 runs:
   using: "composite"
   steps:
-    - name: Get token
-      uses: peter-murray/workflow-application-token-action@v1
-      id: get-token
-      with:
-        application_id: ${{ secrets.APPLICATION_ID }}
-        application_id: ${{ secrets.APP_PRIVATE_KEY }}
+    # - name: Get token
+    #   uses: peter-murray/workflow-application-token-action@v1
+    #   id: get-token
+    #   with:
+    #     application_id: ${{ secrets.APPLICATION_ID }}
+    #     application_id: ${{ secrets.APP_PRIVATE_KEY }}
 
     - uses: actions/checkout@v2
       with:
-        token: ${{ steps.get-token.outputs.token }}
+        token: ${{secrets.GITHUB_TOKEN}}
 
     - uses: subosito/flutter-action@v1
     - name: Analyze commands
