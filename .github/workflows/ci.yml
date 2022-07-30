@@ -44,7 +44,7 @@ jobs:
       - name: Report code coverage
         uses: zgosalvez/github-actions-report-lcov@49af65b0586c274a625a41a2dc8aaaae7d00568b
         with:
-          coverage-files: coolmovies_mobile/coverage/lcov.*.info
+          coverage-files: coverage/lcov.*.info
           minimum-coverage: 0
           artifact-name: code-coverage-report
           github-token: ${{ secrets.GITHUB_TOKEN }}
