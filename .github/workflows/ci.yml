@@ -6,9 +6,9 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: regisksc/coolmovies-test/.github/actions/analyze@main
+      - uses: ./.github/actions/analyze@main
 
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: regisksc/coolmovies-test/.github/actions/test@main
+      - uses: ./.github/actions/test@main
