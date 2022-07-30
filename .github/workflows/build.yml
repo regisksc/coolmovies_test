@@ -4,48 +4,21 @@ on:
   push:
     tags:
       - v*
+    branches:
+      - "releases/**"
 
 jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - run: |
-          flutter pub get
-          flutter format --set-exit-if-changed .
-          flutter analyze .
+      - uses: ./.github/actions/analyze
 
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - name: Generate test results
-        run: |
-          ./scripts/runTests.sh
-          ./scripts/runCodeMetrics.sh
-          flutter test --coverage
-          flutter test --machine > test-results.json
-
-      - name: upload metrics html files
-        uses: actions/upload-artifact@v3
-        with:
-          name: html-metrics
-          path: |
-            **/coverage
-            **/metrics
-
-      - uses: dorny/test-reporter@v1.4.2
-        with:
-          name: test-results
-          path: coolmovies_mobile/test-results.json
-          reporter: flutter-json
-
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
-        with:
-          path: coolmovies_mobile/coverage/lcov.info
-          min_coverage: 0
+      - uses: ./.github/actions/test
 
   build-apk:
     runs-on: ubuntu-latest
@@ -61,8 +34,8 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
       - run: |
-          flutter pub get
           flutter clean
+          flutter pub get
           flutter build apk --release
       - name: Upload appbundle
         uses: actions/upload-artifact@v2.1.4
