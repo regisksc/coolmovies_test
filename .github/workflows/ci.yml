@@ -11,7 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
-      - run: |
+      - name: Analyze commands
+        run: |
           flutter pub get
           flutter format --set-exit-if-changed .
           flutter analyze .
@@ -24,19 +25,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
+
       - name: Generate test results
         run: |
           ./scripts/runTests.sh
           ./scripts/runCodeMetrics.sh
           flutter test --coverage
           flutter test --machine > test-results.json
-          ls
-      - uses: dorny/test-reporter@v1.4.2
+
+      - name: upload metrics html files
+        uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: coolmovies_mobile/test-results.json
-          reporter: flutter-json
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+          name: html-metrics
+          path: |
+            **/coverage
+            **/metrics
+
+      - name: Report code coverage
+        uses: zgosalvez/github-actions-report-lcov@49af65b0586c274a625a41a2dc8aaaae7d00568b
         with:
-          path: coolmovies_mobile/coverage/lcov.info
-          min_coverage: 0
+          coverage-files: coolmovies_mobile/coverage/lcov.*.info
+          minimum-coverage: 0
+          artifact-name: code-coverage-report
+          github-token: ${{ secrets.GITHUB_TOKEN }}
