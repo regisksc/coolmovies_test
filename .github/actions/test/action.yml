@@ -8,6 +8,7 @@ runs:
     - name: Test commands
       shell: bash
       run: |
+        ls
         cd ./coolmovies_mobile
         ./scripts/runTests.sh
         flutter test --coverage
