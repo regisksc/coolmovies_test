@@ -6,9 +6,10 @@ sudo apt-get update
 sudo apt-get -y install lcov
 flutter pub global activate remove_from_coverage
 echo '############################### Removing generated files #####################'
-cd ./coolmovies_mobile
+cd ./coolmovies_mobile  
 ls -la
 flutter test --coverage
+cat coverage/lcov.info
 flutter pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info
 echo '############################### Generating coverage ##########################'
 genhtml coverage/lcov.info -o coverage/html
