@@ -7,7 +7,7 @@ runs:
     - name: Analyze commands
       shell: bash
       run: |
-        cd ./coolmovies
+        cd ./coolmovies_mobile
         flutter pub get
         flutter format --set-exit-if-changed .
         flutter analyze .
