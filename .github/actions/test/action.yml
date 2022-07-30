@@ -8,7 +8,6 @@ runs:
     - name: Test commands
       shell: bash
       run: |
-        ls
         cd ./coolmovies_mobile
         flutter test --coverage
         flutter test --machine > test-results.json

@@ -1,11 +1,7 @@
 #!/bin/bash
 
-echo '############################### Set up #######################################'
-echo "ls before"
-ls
 cd ..
-echo "ls after"
-ls
+echo '############################### Set up #######################################'
 sudo apt-get update
 sudo apt-get -y install lcov
 flutter pub global activate remove_from_coverage
