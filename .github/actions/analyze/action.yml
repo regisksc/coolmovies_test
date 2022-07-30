@@ -15,7 +15,7 @@ runs:
 
     - name: upload metrics html
       uses: actions/upload-artifact@v3
-        with:
-          name: complexity-metrics
-          path: |
-            **/metrics
+      with:
+        name: complexity-metrics
+        path: |
+          **/metrics

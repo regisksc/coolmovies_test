@@ -15,10 +15,10 @@ runs:
 
     - name: upload metrics html
       uses: actions/upload-artifact@v3
-        with:
-          name: coverage-metrics
-          path: |
-            **/coverage
+      with:
+        name: coverage-metrics
+        path: |
+          **/coverage
 
     - uses: dorny/test-reporter@v1.4.2
       with:
