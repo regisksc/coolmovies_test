@@ -5,12 +5,16 @@ on: [push]
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    shell: bash
     steps:
       - uses: actions/checkout@v2
+      - run: ls
       - uses: ./.github/actions/analyze
 
   test:
     runs-on: ubuntu-latest
+    shell: bash
     steps:
       - uses: actions/checkout@v2
+      - run: ls
       - uses: ./.github/actions/test
