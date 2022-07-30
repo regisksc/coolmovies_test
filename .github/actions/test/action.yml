@@ -8,9 +8,11 @@ runs:
     - name: Test commands
       shell: bash
       run: |
-        ./scripts/runTests.sh
+        ls
+        cd ./coolmovies_mobile
         flutter test --coverage
         flutter test --machine > test-results.json
+        ./scripts/runTests.sh
 
     - name: upload metrics html
       uses: actions/upload-artifact@v3
