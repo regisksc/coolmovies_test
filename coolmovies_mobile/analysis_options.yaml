@@ -53,7 +53,7 @@ analyzer:
     comment_references: error
     constant_identifier_names: error
     control_flow_in_finally: error
-    curly_braces_in_flow_control_structures: error
+    curly_braces_in_flow_control_structures: ignore
     diagnostic_describe_all_properties: warning
     directives_ordering: error
     empty_catches: error

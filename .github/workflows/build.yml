@@ -34,6 +34,7 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
       - run: |
+          cd ./coolmovies_mobile
           flutter clean
           flutter pub get
           flutter build apk --release
@@ -41,4 +42,5 @@ jobs:
         uses: actions/upload-artifact@v2.1.4
         with:
           name: coolmovies
-          path: build/app/outputs/bundle/release/app-release.apk
+          path: |
+            **/*-release*.apk

@@ -29,4 +29,5 @@ runs:
     - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
       with:
         path: coolmovies_mobile/coverage/lcov.info
-        min_coverage: 0
+        exclude: "**/*.*.dart lib/main.dart"
+        min_coverage: 60

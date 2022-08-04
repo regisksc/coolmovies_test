@@ -1,0 +1,36 @@
+{
+  "data": {
+    "allUsers": {
+      "nodes": [
+        {
+          "id": "5f1e6707-7c3a-4acd-b11f-fd96096abd5a",
+          "name": "Chrono",
+          "commentsByUserId": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "id": "65549e6a-2389-42c5-909a-4475fdbb3e69",
+          "name": "Ayla",
+          "commentsByUserId": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "id": "7b4c31df-04b3-452f-a9ee-e9f8836013cc",
+          "name": "Marle",
+          "commentsByUserId": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "hasPreviousPage": true
+      }
+    }
+  }
+}
