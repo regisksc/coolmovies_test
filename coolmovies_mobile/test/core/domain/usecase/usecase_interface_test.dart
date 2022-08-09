@@ -1,4 +1,4 @@
-import 'package:coolmovies/core/domain/usecase/usecase.dart';
+import 'package:coolmovies/core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

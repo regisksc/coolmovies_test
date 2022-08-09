@@ -28,19 +28,22 @@ class MovieListTileForeground extends StatelessWidget {
             Expanded(
               flex: 7,
               child: Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      movie.title,
-                      style: textTheme.bodyMedium!.copyWith(
-                        color: Colors.black,
-                        fontSize: height * .017,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.bold,
+                    Hero(
+                      tag: "${movie.id}-${movie.title}",
+                      child: Text(
+                        movie.title,
+                        style: textTheme.labelMedium!.copyWith(
+                          color: Colors.black,
+                          fontSize: height * .018,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                     const Spacer(),
                     Text(
@@ -61,11 +64,12 @@ class MovieListTileForeground extends StatelessWidget {
               flex: 3,
               child: Container(
                 alignment: Alignment.bottomRight,
+                padding: const EdgeInsets.only(bottom: 5),
                 child: () {
                   return Text(
-                    "⭐ ${movie.rating}",
-                    style: textTheme.bodyLarge!
-                        .copyWith(fontSize: height * .015 * 1.5),
+                    movie.ratingWStar,
+                    style: textTheme.labelLarge!
+                        .copyWith(fontSize: height * .015 * 1.8),
                   );
                 }(),
               ),

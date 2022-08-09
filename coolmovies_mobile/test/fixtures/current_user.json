@@ -1,0 +1,11 @@
+{
+  "data": {
+    "currentUser": {
+      "id": "65549e6a-2389-42c5-909a-4475fdbb3e69",
+      "name": "Ayla",
+      "commentsByUserId": {
+        "nodes": []
+      }
+    }
+  }
+}

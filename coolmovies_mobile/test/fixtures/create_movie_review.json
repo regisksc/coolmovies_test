@@ -1,0 +1,15 @@
+{
+  "data": {
+    "createMovieReview": {
+      "movieReview": {
+        "id": "c19fd9d8-330c-4b8b-ac8f-dec84e86a669",
+        "movieByMovieId": {
+          "title": "Rogue One: A Star Wars Story"
+        },
+        "userByUserReviewerId": {
+          "name": "Chrono"
+        }
+      }
+    }
+  }
+}

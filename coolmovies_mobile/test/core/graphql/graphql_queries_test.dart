@@ -1,3 +1,4 @@
+import 'package:coolmovies/core/graphql/graphql_mutations.dart';
 import 'package:coolmovies/core/graphql/graphql_queries.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,7 +8,8 @@ void main() {
     'createUser query should contain input value',
     () async {
       final input = {"name": "Heather"};
-      expect(GQLQueries.createUser(userMap: input), contains(input.toString()));
+      expect(
+          GQLMutations.createUser(userMap: input), contains(input.toString()));
     },
   );
 
@@ -22,7 +24,7 @@ void main() {
         "userReviewerId": "5f1e6707-7c3a-4acd-b11f-fd96096abd5a"
       };
       expect(
-        GQLQueries.createMovieReview(movieReviewMap: input),
+        GQLMutations.createMovieReview(movieReviewMap: input),
         contains(input.toString()),
       );
     },
@@ -38,7 +40,7 @@ void main() {
         "userReviewerId": "5f1e6707-7c3a-4acd-b11f-fd96096abd5a"
       };
       expect(
-        GQLQueries.createMovieReview(movieReviewMap: input),
+        GQLMutations.createMovieReview(movieReviewMap: input),
         contains(input.toString()),
       );
     },

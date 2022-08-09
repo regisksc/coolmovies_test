@@ -3,15 +3,13 @@ import 'dart:convert';
 import 'package:coolmovies/core/core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'adapted_flutter_secure_storage_test.mocks.dart';
+class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
-@GenerateMocks([FlutterSecureStorage])
 void main() {
   late AdaptedFlutterSecureStorage sut;
-  late MockFlutterSecureStorage storage;
+  late FlutterSecureStorage storage;
 
   setUp(() {
     storage = MockFlutterSecureStorage();
@@ -22,7 +20,7 @@ void main() {
     "Should successfully retrieve values",
     () async {
       // Arrange
-      when(storage.read(key: anyNamed('key'))).thenAnswer(
+      when(() => storage.read(key: any(named: 'key'))).thenAnswer(
         (_) async => jsonEncode({"key": "value"}),
       );
       // Act
@@ -36,7 +34,7 @@ void main() {
     "Should return an empty map when key is not present",
     () async {
       // Arrange
-      when(storage.read(key: anyNamed('key'))).thenAnswer(
+      when(() => storage.read(key: any(named: 'key'))).thenAnswer(
         (_) async => null,
       );
       // Act
@@ -52,12 +50,14 @@ void main() {
     () async {
       // Arrange
       final futureCompletion = Future.value();
-      when(storage.write(key: anyNamed('key'), value: anyNamed('value')))
+      when(() =>
+              storage.write(key: any(named: 'key'), value: any(named: 'value')))
           .thenAnswer((_) => futureCompletion);
       // Act
       sut.write("key", "value");
       // Assert
-      verify(storage.write(key: anyNamed('key'), value: anyNamed('value')));
+      verify(() =>
+          storage.write(key: any(named: 'key'), value: any(named: 'value')));
       expect(sut.write("any", "value"), completes);
     },
   );

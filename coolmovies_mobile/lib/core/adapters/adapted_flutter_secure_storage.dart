@@ -12,7 +12,7 @@ class AdaptedFlutterSecureStorage implements StorageAdapter {
   Future<JSON> read(String key) async {
     final readValue = await storage.read(key: key);
     if (readValue == null) return {};
-    return jsonDecode(readValue) as JSON;
+    return json.decode(readValue.trim()) as JSON;
   }
 
   @override

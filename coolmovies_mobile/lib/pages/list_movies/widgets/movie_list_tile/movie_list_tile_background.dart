@@ -28,16 +28,21 @@ class MovieListTileBackground extends StatelessWidget {
         borderRadius: defaultRadius,
         child: SizedBox(
           height: context.width,
-          child: Image.network(
-            movie.imgUrl!,
-            fit: BoxFit.fill,
-            height: movieImageSize,
-            width: movieImageSize,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress?.cumulativeBytesLoaded ==
-                  loadingProgress?.expectedTotalBytes) return child;
-              return const CircularProgressIndicator.adaptive();
-            },
+          child: Hero(
+            tag: movie.id,
+            child: Image.network(
+              movie.imgUrl!,
+              fit: BoxFit.fill,
+              height: movieImageSize,
+              width: movieImageSize,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress?.cumulativeBytesLoaded ==
+                    loadingProgress?.expectedTotalBytes) return child;
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              },
+            ),
           ),
         ),
       ),

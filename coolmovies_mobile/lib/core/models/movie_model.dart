@@ -1,16 +1,19 @@
+import 'package:equatable/equatable.dart';
+import 'package:faker/faker.dart';
 import 'package:intl/intl.dart';
 
 import '../core.dart';
 
-class MovieModel {
+class MovieModel extends Equatable {
   const MovieModel({
-    required this.title,
     required this.id,
-    required this.createdBy,
-    this.reviews = const [],
-    this.directorName,
+    required this.title,
+    this.description,
     this.imgUrl,
     this.releaseDate,
+    this.directorName,
+    this.reviews = const [],
+    required this.createdBy,
   });
 
   factory MovieModel.fromJson(JSON json) {
@@ -26,11 +29,14 @@ class MovieModel {
       reviews: (json['movieReviewsByMovieId']['nodes'] as List)
           .map((e) => MovieReviewModel.fromJson(e as JSON))
           .toList(),
+      description:
+          json['description'] as String? ?? faker.lorem.sentences(4).join(" "),
     );
   }
 
   final String id;
   final String title;
+  final String? description;
   final String? imgUrl;
   final String? releaseDate;
   final String? directorName;
@@ -47,6 +53,8 @@ class MovieModel {
     return double.parse(averageRating.toStringAsFixed(1));
   }
 
+  String get ratingWStar => "⭐ $rating";
+
   String get formattedReleaseDate {
     if (releaseDate == null) return "";
     final dateSplit = releaseDate!.split("-").map((e) => int.parse(e)).toList();
@@ -61,6 +69,8 @@ class MovieModel {
 
   String get releaseYear => releaseDate?.split("-").first ?? "";
 
+  void removeReview(MovieReviewModel review) => reviews.remove(review);
+
   JSON get toJson {
     return {
       "id": id,
@@ -68,8 +78,47 @@ class MovieModel {
       "title": title,
       "releaseDate": releaseDate,
       "movieDirectorByMovieDirectorId": {"name": directorName},
-      "movieReviewsByMovieId": {"nodes": reviews},
-      "userByUserCreatorId": createdBy
+      "movieReviewsByMovieId": {
+        "nodes": reviews.map((review) => review.toJson).toList()
+      },
+      "userByUserCreatorId": createdBy.toJson,
+      "description": description,
     };
   }
+
+  @override
+  List<Object> get props {
+    return [id, title];
+  }
+
+  MovieModel copyWith({
+    required List<MovieReviewModel> newReviews,
+  }) {
+    return MovieModel(
+      id: id,
+      title: title,
+      description: description,
+      imgUrl: imgUrl,
+      releaseDate: releaseDate,
+      directorName: directorName,
+      reviews: newReviews,
+      createdBy: createdBy,
+    );
+  }
+
+  MovieModel get copy {
+    return MovieModel(
+      id: id,
+      title: title,
+      description: description,
+      imgUrl: imgUrl,
+      releaseDate: releaseDate,
+      directorName: directorName,
+      reviews: reviews,
+      createdBy: createdBy,
+    );
+  }
+
+  @override
+  bool get stringify => true;
 }

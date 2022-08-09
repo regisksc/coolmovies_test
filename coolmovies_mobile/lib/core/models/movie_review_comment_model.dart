@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import '../core.dart';
 
-class MovieReviewCommentModel {
-  MovieReviewCommentModel({
+class MovieReviewCommentModel extends Equatable {
+  const MovieReviewCommentModel({
     required this.movieReviewId,
     required this.id,
     required this.title,
@@ -30,4 +32,7 @@ class MovieReviewCommentModel {
       "body": body,
     };
   }
+
+  @override
+  List<Object?> get props => [id, movieReviewId];
 }

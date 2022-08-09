@@ -20,15 +20,18 @@ void main() {
             "title": model.title,
             "releaseDate": model.releaseDate,
             "movieDirectorByMovieDirectorId": {"name": model.directorName},
-            "movieReviewsByMovieId": {"nodes": model.reviews},
-            "userByUserCreatorId": model.createdBy,
+            "movieReviewsByMovieId": {
+              "nodes": model.reviews.map((e) => e.toJson).toList()
+            },
+            "userByUserCreatorId": model.createdBy.toJson,
+            "description": model.description,
           },
         ),
       );
     },
   );
   test(
-    "test formattedReleaseDate",
+    "formattedReleaseDate",
     () async {
       // Arrange
       final model = mockMovieModel();
@@ -43,7 +46,7 @@ void main() {
   );
 
   test(
-    "test movie rating",
+    "movie rating",
     () async {
       // Arrange
       final model = mockMovieModel();
@@ -59,7 +62,7 @@ void main() {
     },
   );
   test(
-    "test movie release year",
+    "movie release year",
     () async {
       // Arrange
       final model = mockMovieModel();
@@ -72,7 +75,7 @@ void main() {
   );
 
   test(
-    "test movie release year when release date is empty",
+    "movie release year should be empty when release date is empty",
     () async {
       // Arrange
       final model = mockMovieModel(makeReleaseDateNull: true);
@@ -80,6 +83,33 @@ void main() {
       final year = model.releaseYear;
       // Assert
       expect(year, equals(""));
+    },
+  );
+
+  test(
+    "copyWith should generate an instance with new data",
+    () async {
+      // Arrange
+      final model = mockMovieModel();
+      // Act
+      final newReview = mockMovieReviewModel;
+      final newModel = model.copyWith(newReviews: [
+        model.reviews[0],
+        model.reviews[1],
+        newReview, // !
+      ]);
+      // Assert
+      expect(model.createdBy, equals(newModel.createdBy));
+      expect(model.description, equals(newModel.description));
+      expect(model.directorName, equals(newModel.directorName));
+      expect(model.title, equals(newModel.title));
+      expect(model.description, equals(newModel.description));
+      expect(model.id, equals(newModel.id));
+      expect(model.imgUrl, equals(newModel.imgUrl));
+      expect(model.releaseDate, equals(newModel.releaseDate));
+      expect(model.reviews[0], equals(newModel.reviews[0]));
+      expect(model.reviews[1], equals(newModel.reviews[1]));
+      expect(model.reviews[2], isNot(newModel.reviews[2]));
     },
   );
 }

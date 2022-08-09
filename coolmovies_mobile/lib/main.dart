@@ -12,6 +12,6 @@ void main() async {
 
   runApp(GraphQLProvider(
     client: client,
-    child: const MyApp(),
+    child: MyApp(graphql),
   ));
 }
