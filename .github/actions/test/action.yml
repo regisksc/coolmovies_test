@@ -13,6 +13,15 @@ runs:
         flutter test --machine > test-results.json
         ./scripts/runTests.sh
 
+    - name: Run Flutter Driver tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        target: playstore
+        api-level: 29
+        arch: x86_64
+        profile: Nexus 6
+        script: flutter drive --driver=test_driver/integration_test.dart --target=integration_tests/init_test.dart
+
     - name: upload metrics html
       uses: actions/upload-artifact@v3
       with:
