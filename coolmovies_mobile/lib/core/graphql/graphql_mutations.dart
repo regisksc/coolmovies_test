@@ -1,47 +1,26 @@
-// ignore_for_file: leading_newlines_in_multiline_strings
+// ignore_for_file: unnecessary_string_escapes
+
 import '../core.dart';
 
 class GQLMutations {
   GQLMutations._();
-
-  static String createComment({required JSON commentMap}) {
-    return """
-      mutation {
-        createComment(input: {comment: $commentMap}) {
-          comment {
-            id
-            title
-            body
-            userByUserId {
-              id
-              name
-            }
-            movieReviewByMovieReviewId {
-              id
-              title
-              movieByMovieId {
-                title
-              }
-            }
-          }
-        }
-      }
-  """;
-  }
-
-  // ##
 
   static String createMovieReview({
     required JSON movieReviewMap,
   }) {
     return """
       
+
 mutation {
-  createMovieReview(input: { 
-		movieReview: {
-      movieReview: $movieReviewMap
-	}
-}) {
+  createMovieReview(
+    input: { 
+      movieReview: {
+        title: \"${movieReviewMap['title']}\",
+        body: \"${movieReviewMap['body']}\",
+        rating: ${movieReviewMap['rating']},
+        movieId: \"${movieReviewMap['movieId']}\",
+        userReviewerId: \"${movieReviewMap['userReviewerId']}\"
+      }}) {
     movieReview {
       id
       movieByMovieId {
@@ -65,7 +44,14 @@ mutation {
     return """
       
 mutation {
-	updateMovieReviewById (input: $movieReviewMap) {
+	updateMovieReviewById (input: {
+	id: \"${movieReviewMap['id']}\",movieReviewPatch: {title: \"${movieReviewMap['title']}\",
+      body: \"${movieReviewMap['body']}\",
+      rating: ${movieReviewMap['rating']},
+      movieId: \"${movieReviewMap['movieId']}\",
+      userReviewerId: \"${movieReviewMap['userReviewerId']}\"
+      
+    }}) {
 
 		movieReview {
 			id
@@ -83,11 +69,11 @@ mutation {
   // ##
 
   static String createUser({
-    required JSON userMap,
+    required String userName,
   }) {
-    return """"
+    return """
       mutation {
-        createUser(input: {user: $userMap}) {
+        createUser(input: {user: {name: $userName}}) {
         user {
           id
           name

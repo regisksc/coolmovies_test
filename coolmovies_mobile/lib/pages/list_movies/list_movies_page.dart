@@ -30,13 +30,13 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
     return SafeArea(
       bottom: false,
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: Stack(
           children: [
-            SizedBox(height: context.height * .03),
-            ListMoviesPageHeader(userProvider: widget._userProvider),
-            SizedBox(height: context.height * .03),
             MoviesList(movies: widget._moviesProvider.movies),
+            Positioned(
+              top: context.height * .03,
+              child: ListMoviesPageHeader(userProvider: widget._userProvider),
+            ),
           ],
         ),
       ),

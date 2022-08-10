@@ -1,0 +1,22 @@
+{
+  "data": {
+    "allMovieReviews": {
+      "nodes": [
+        {
+          "title": "Great Movie",
+          "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          "id": "e8edc53a-29cf-4470-8351-ed22cc144a3f",
+          "rating": 5,
+          "movieId": "b8d93229-e02a-4060-9370-3e073ada86c3",
+          "userByUserReviewerId": {
+            "name": "Chrono",
+            "id": "5f1e6707-7c3a-4acd-b11f-fd96096abd5a",
+            "commentsByUserId": {
+              "nodes": []
+            }
+          }
+        }
+      ]
+    }
+  }
+}

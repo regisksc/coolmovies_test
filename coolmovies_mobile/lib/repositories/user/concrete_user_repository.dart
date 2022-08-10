@@ -15,8 +15,8 @@ class ConcreteUserRepository extends UserRepository {
   @override
   Future<Either<Failure, UserModel>> getCurrentUser() {
     return client.performFetchOneQuery<UserModel>(
-      storage,
-      storageKey: 'currentUser',
+      storage: storage,
+      mapKey: 'currentUser',
       gqlQuery: GQLQueries.getCurrentUser,
       serializer: UserModel.fromJson,
     );

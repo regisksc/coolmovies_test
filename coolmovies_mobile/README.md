@@ -23,14 +23,16 @@ For your solution to be accepted it is required that your application is able to
 
 Anything else is up to you (animations, assets, 3rd party dependencies, etc). We will consider all your additions so don't stick to the minimum!
 
+Good luck!
+
 Roadmap:
 
 - improve integration test ✅
-- add golden tests
-- fix responsiveness in small screens
-- add Matrix4 animations in movie list
+- fix responsiveness in small screens ✅
+- add pagination in movies list ✅
 - add change user ability
-- add review list slide in animation when creating a reiew
-- add movie info animations when page loads
-
-Good luck!
+- add Matrix4 animations in movie list
+- add slide in animation when creating/rendering a review ✅
+- add movie info animations when page loads ✅
+- add golden tests
+- raise test coverage

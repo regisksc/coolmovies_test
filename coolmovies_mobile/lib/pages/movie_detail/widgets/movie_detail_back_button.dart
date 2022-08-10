@@ -23,7 +23,11 @@ class BackToListButton extends StatelessWidget {
         elevation: 1,
         highlightElevation: 0,
         onPressed: () {
-          context.read<MoviesProvider>().resetEditState(movie!);
+          final provider = context.read<MoviesProvider>();
+          provider.resetEditState();
+          provider.resetFetchingReviewState();
+          provider.lastFetchedPage = 0;
+
           context.pop;
         },
         color: Colors.blueGrey.withOpacity(.3),

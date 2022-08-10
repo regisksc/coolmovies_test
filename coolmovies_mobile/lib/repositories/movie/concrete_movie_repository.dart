@@ -18,10 +18,22 @@ class ConcreteMovieRepository implements MovieRepository {
   @override
   Future<Either<Failure, List<MovieModel>>> getAllMovies() async {
     return client.performFetchListQuery(
-      storage,
-      storageKey: _storageKey,
+      storage: storage,
+      mapKey: _storageKey,
       gqlQuery: GQLQueries.getAllMovies,
       serializer: MovieModel.fromJson,
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<MovieReviewModel>>> getMovieReviewsFor(
+    String movieId, {
+    required int page,
+  }) async {
+    return client.performFetchListQuery(
+      mapKey: 'allMovieReviews',
+      gqlQuery: GQLQueries.getReviewsForMovieId(movieId, pageNum: page),
+      serializer: MovieReviewModel.fromJson,
     );
   }
 
@@ -43,6 +55,7 @@ class ConcreteMovieRepository implements MovieRepository {
     return client.performMutation(
       gqlQuery: GQLMutations.createMovieReview(
         movieReviewMap: {
+          "id": review.id,
           "title": review.title,
           "body": review.body,
           "rating": review.rating,

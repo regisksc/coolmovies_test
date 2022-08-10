@@ -6,3 +6,5 @@ String resultDataNullStringFor({required String request}) =>
 BorderRadius get defaultRadius => const BorderRadius.all(
       Radius.circular(15),
     );
+
+int get reviewsPerPage => 3;

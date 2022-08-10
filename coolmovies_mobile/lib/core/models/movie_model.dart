@@ -53,18 +53,29 @@ class MovieModel extends Equatable {
     return double.parse(averageRating.toStringAsFixed(1));
   }
 
-  String get ratingWStar => "⭐ $rating";
+  String get ratingWStar => "⭐$rating";
 
   String get formattedReleaseDate {
     if (releaseDate == null) return "";
-    final dateSplit = releaseDate!.split("-").map((e) => int.parse(e)).toList();
-    return DateFormat.yMMMd().format(
+    final firstDateSplit =
+        releaseDate!.split("-").map((e) => int.parse(e)).toList();
+    final date = DateFormat.yMMMd().format(
       DateTime(
-        dateSplit[0],
-        dateSplit[1],
-        dateSplit[2],
+        firstDateSplit[0],
+        firstDateSplit[1],
+        firstDateSplit[2],
       ),
     );
+    final lastDateSplit = date.split(' ');
+    final month = lastDateSplit[0];
+    String day = lastDateSplit[1];
+    final year = lastDateSplit[2];
+    day = day.substring(0, 2);
+    day = '${day}th,';
+    if (lastDateSplit[1].endsWith("1")) day = '${day}st,';
+    if (lastDateSplit[1].endsWith("2")) day = '${day}nd,';
+    if (lastDateSplit[1].endsWith("3")) day = '${day}rd,';
+    return '$month $day $year';
   }
 
   String get releaseYear => releaseDate?.split("-").first ?? "";

@@ -36,6 +36,7 @@ class MovieReviewModel extends Equatable {
   bool isInEditState = false;
 
   MovieReviewModel? reviewBackup;
+  bool get hasReviewBackup => reviewBackup != null;
   void backup() => reviewBackup = copy;
 
   void discardChanges() {

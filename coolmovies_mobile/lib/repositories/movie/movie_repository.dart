@@ -4,6 +4,10 @@ import '../../core/core.dart';
 
 abstract class MovieRepository {
   Future<Either<Failure, List<MovieModel>>> getAllMovies();
+  Future<Either<Failure, List<MovieReviewModel>>> getMovieReviewsFor(
+    String movieId, {
+    required int page,
+  });
   Future storeMovies(List<MovieModel> movies);
   Future remoteAddReview({
     required String movieId,

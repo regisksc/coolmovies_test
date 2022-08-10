@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_string_escapes, leading_newlines_in_multiline_strings
 
+import '../core.dart';
+
 class GQLQueries {
   GQLQueries._();
 
@@ -58,120 +60,44 @@ class GQLQueries {
 
   // ##
 
-  static String get getAllMovieReviews {
-    return """
-      query {
-        allMovieReviews {
-          nodes {
-            title
-            body
-            rating
-            movieByMovieId {
-              id
-              title
-              userByUserCreatorId {
-                id
-                name
-              }
-            }
-            commentsByMovieReviewId {
-              nodes {
-                id
-                title
-                body
-                userByUserId {
-                  id
-                  name
-                }
-              }
-            }
-          }
-        }
-      }""";
-  }
-
-  // ##
-
-  static String getReview({required String id}) {
-    return """
-      query {
-        movieReviewById(id: \"$id\") {
-          body
-          id
-          movieByMovieId {
-            id
-            releaseDate
-            title
-            movieDirectorByMovieDirectorId {
-              age
-              id
-              name
-            }
-          }
-          rating
-          nodeId
-          title
-          userByUserReviewerId {
-            name
-            id
-          }
-        }
-      } """;
-  }
-
-  // ##
-
-  static String getReviews({required String movieId}) {
-    return """ 
-      query {
-        allMovieReviews(
-        filter: {movieId: {equalTo: \"$movieId\"}}
-      ) {
-        nodes {
-          title
-          body
-          rating
-          movieByMovieId {
-            title
-          }
-        }
-      }
-      }
-    """;
-  }
-
-  // ##
-
-  static String getUsers({int page = 1}) {
+  static String getReviewsForMovieId(
+    String movieId, {
+    required int pageNum,
+  }) {
     late final int offset;
-    if (page == 1) offset = 0;
-    if (page != 1) offset = 3 * page;
-    return """
-      query {
-        allUsers(first: 3, offset: $offset) {
-          nodes {
-          id
-          name
-          commentsByUserId {
-            totalCount,
-            nodes {
-                movieReviewId
-                id
-                title
-                body
-              }
-            }
-          }
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-          }
-        }
-      }
-  """;
+    if (pageNum == 1) offset = 0;
+    if (pageNum != 1) {
+      offset = reviewsPerPage * pageNum;
+    }
+    return """ {
+  allMovieReviews(
+		first: $reviewsPerPage, offset: $offset
+    filter: { movieId: {equalTo: "$movieId"}}
+  ) {
+    nodes {
+				title
+				body
+				id
+				rating
+				title
+        movieId
+				userByUserReviewerId {
+					name
+					id
+					commentsByUserId {
+										nodes {
+											movieReviewId
+											id
+											title
+											body
+											
+										}
+									}
+    	}
+    }
   }
-
-  // ##
+} """;
+  }
 
   static String get getCurrentUser {
     return """

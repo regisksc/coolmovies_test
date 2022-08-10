@@ -20,7 +20,6 @@ class AddReviewButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () => context.read<MoviesProvider>().addReview(
-              movie: movie,
               user: context.read<UserProvider>().user!,
             ),
         icon: const Icon(

@@ -5,6 +5,7 @@ extension ContextExtensions on BuildContext {
   double get width => MediaQuery.of(this).size.width;
   double get heightAdjustFactor => width > 320 ? .87 : 1;
   double get heightAdjusted => height * heightAdjustFactor;
+  bool get screenIsSmall => width < 350;
   ThemeData get theme => Theme.of(this);
   TextTheme get textTheme => Theme.of(this).textTheme;
   void get pop {

@@ -4,7 +4,7 @@ import '../../../../../../core/core.dart';
 import '../../../../../../providers/movie_provider.dart';
 import '../../../../movie_detail.dart';
 
-class ReviewTile extends StatelessWidget {
+class ReviewTile extends StatefulWidget {
   const ReviewTile({
     Key? key,
     required this.review,
@@ -15,29 +15,58 @@ class ReviewTile extends StatelessWidget {
   final MoviesProvider provider;
 
   @override
+  State<ReviewTile> createState() => _ReviewTileState();
+}
+
+class _ReviewTileState extends State<ReviewTile> {
+  bool tileLoaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Future.delayed(const Duration(milliseconds: 1), () {
+      setState(() => tileLoaded = true);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultMovieInfoCard(
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        height: context.height * .3,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 12,
-              child: _ReviewerRow(
-                provider,
-                review: review,
-              ),
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 300),
+      opacity: tileLoaded ? 1 : 0,
+      child: AnimatedContainer(
+        alignment: Alignment.centerLeft,
+        duration: const Duration(milliseconds: 200),
+        margin: EdgeInsets.only(left: tileLoaded ? context.width * .05 : 0),
+        child: Card(
+          margin: EdgeInsets.zero,
+          color: Colors.blueGrey[50],
+          elevation: 10,
+          shape: RoundedRectangleBorder(borderRadius: defaultRadius),
+          child: Container(
+            width: context.width * .90,
+            padding: const EdgeInsets.all(5),
+            height: context.height * (context.screenIsSmall ? .35 : .3),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 12,
+                  child: _ReviewerRow(
+                    widget.provider,
+                    review: widget.review,
+                  ),
+                ),
+                Expanded(
+                  flex: 88,
+                  child: _ReviewContent(
+                    widget.provider,
+                    review: widget.review,
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 88,
-              child: _ReviewContent(
-                provider,
-                review: review,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -60,7 +89,7 @@ class _ReviewerRow extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            "${review.createdBy.name}'s opinion:",
+            "${review.createdBy.name}'${review.createdBy.name.endsWith('s') ? '' : 's'} opinion:",
             style: context.textTheme.bodyMedium!.copyWith(
               color: Colors.blueGrey.shade600,
             ),

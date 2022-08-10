@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/core.dart';
@@ -26,10 +27,11 @@ class ReviewHeader extends StatelessWidget {
               return review.isInEditState
                   ? TextFormField(
                       initialValue: review.title,
-                      maxLines: 10,
+                      inputFormatters: [LengthLimitingTextInputFormatter(20)],
                       onChanged: (editValue) => review.title = editValue,
                       autofocus: true,
                       decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 5),
                         border: InputBorder.none,
                         hintText: 'title',
                       ),

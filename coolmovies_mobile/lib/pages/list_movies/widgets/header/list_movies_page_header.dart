@@ -24,10 +24,12 @@ class ListMoviesPageHeader extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
     return Card(
-      elevation: 10,
+      elevation: 20,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: defaultRadius),
       child: Container(
+        height: context.height * .18,
+        width: context.width * .7,
         padding: const EdgeInsets.symmetric(vertical: 10).copyWith(right: 10),
         decoration: BoxDecoration(
           color: Colors.blueGrey.shade900,
@@ -36,7 +38,6 @@ class ListMoviesPageHeader extends StatelessWidget {
             topLeft: Radius.zero,
           ),
         ),
-        width: context.width * .7,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

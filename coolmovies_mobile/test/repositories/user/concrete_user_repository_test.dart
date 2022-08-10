@@ -18,7 +18,7 @@ void main() {
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    final gqlDocNode = gql(GQLQueries.getAllMovieReviews);
+    final gqlDocNode = gql(GQLQueries.getAllMovies);
     queryOptions = QueryOptions(document: gqlDocNode);
     registerFallbackValue(queryOptions);
   });

@@ -21,9 +21,10 @@ void main() {
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    final gqlQueryDocNode = gql(GQLQueries.getAllMovieReviews);
-    final gqlMutationDocNode =
-        gql(GQLMutations.createMovieReview(movieReviewMap: {}));
+    final gqlQueryDocNode = gql(GQLQueries.getAllMovies);
+    final gqlMutationDocNode = gql(
+      GQLMutations.createMovieReview(movieReviewMap: {}),
+    );
     queryOptions = QueryOptions(document: gqlQueryDocNode);
     mutationOptions = MutationOptions(document: gqlMutationDocNode);
     registerFallbackValue(queryOptions);
@@ -38,18 +39,20 @@ void main() {
     },
   );
 
-  group('test get all movies', () {
-    void arrangeCommonExecutions(MockGraphQLClient client,
-        {required JSON resultData}) {
-      when(() => client.query(any())).thenAnswer(
-        (_) async => QueryResult(
-          options: queryOptions,
-          source: QueryResultSource.network,
-          data: resultData,
-        ),
-      );
-    }
+  void arrangeCommonExecutions(
+    MockGraphQLClient client, {
+    required JSON resultData,
+  }) {
+    when(() => client.query(any())).thenAnswer(
+      (_) async => QueryResult(
+        options: queryOptions,
+        source: QueryResultSource.network,
+        data: resultData,
+      ),
+    );
+  }
 
+  group('test get all movies', () {
     test(
       "getAllMovies should return a List<MovieModel> on success",
       () async {
@@ -145,6 +148,72 @@ void main() {
     );
   });
 
+  group('mutation tests', () {
+    test("should add a movie review to the remote", () async {
+      // Arrange
+      final review = mockMovieReviewModel;
+      mutationOptions = MutationOptions(
+          document: gql(GQLMutations.createMovieReview(movieReviewMap: {
+        "title": review.title,
+        "body": review.body,
+        "rating": review.rating,
+        "movieId": review.movieId,
+        "userReviewerId": review.createdBy.id,
+      })));
+      when(() => client.mutate(any())).thenAnswer(
+        (_) async => QueryResult(
+          options: mutationOptions,
+          source: QueryResultSource.network,
+          data: {},
+        ),
+      );
+      final movieId = faker.guid.guid();
+      final userId = faker.guid.guid();
+
+      // Act
+      final failureOrNull = await sut.remoteAddReview(
+        movieId: movieId,
+        userId: userId,
+        review: review,
+      );
+
+      // Assert
+      verifyNever(() => storage.read(any()));
+      verifyNever(() => storage.write(any(), any()));
+      expect(failureOrNull, isNull);
+    });
+
+    test("should edit a movie review in remote", () async {
+      // Arrange
+      when(() => client.mutate(any())).thenAnswer(
+        (_) async => QueryResult(
+          options: MutationOptions(
+            document: gql(
+              GQLMutations.createMovieReview(movieReviewMap: {}),
+            ),
+          ),
+          source: QueryResultSource.network,
+          data: {},
+        ),
+      );
+      final movieId = faker.guid.guid();
+      final userId = faker.guid.guid();
+      final review = mockMovieReviewModel;
+
+      // Act
+      final failureOrNull = await sut.remoteEditReview(
+        movieId: movieId,
+        userId: userId,
+        review: review,
+      );
+
+      // Assert
+      verifyNever(() => storage.read(any()));
+      verifyNever(() => storage.write(any(), any()));
+      expect(failureOrNull, isNull);
+    });
+  });
+
   test(
     "stores new movie list when storeMovies is called",
     () async {
@@ -159,59 +228,24 @@ void main() {
     },
   );
 
-  test("should add a movie review to the remote", () async {
-    // Arrange
-    when(() => client.mutate(any())).thenAnswer(
-      (_) async => QueryResult(
-        options: mutationOptions,
-        source: QueryResultSource.network,
-        data: {},
-      ),
-    );
-    final movieId = faker.guid.guid();
-    final userId = faker.guid.guid();
-    final review = mockMovieReviewModel;
-
-    // Act
-    final failureOrNull = await sut.remoteAddReview(
-      movieId: movieId,
-      userId: userId,
-      review: review,
-    );
-
-    // Assert
-    verifyNever(() => storage.read(any()));
-    verifyNever(() => storage.write(any(), any()));
-    expect(failureOrNull, isNull);
-  }, skip: true);
-
-  test("should edit a movie review in remote", () async {
-    // Arrange
-    when(() => client.mutate(any())).thenAnswer(
-      (_) async => QueryResult(
-        options: MutationOptions(
-          document: gql(
-            GQLMutations.createMovieReview(movieReviewMap: {}),
-          ),
-        ),
-        source: QueryResultSource.network,
-        data: {},
-      ),
-    );
-    final movieId = faker.guid.guid();
-    final userId = faker.guid.guid();
-    final review = mockMovieReviewModel;
-
-    // Act
-    final failureOrNull = await sut.remoteEditReview(
-      movieId: movieId,
-      userId: userId,
-      review: review,
-    );
-
-    // Assert
-    verifyNever(() => storage.read(any()));
-    verifyNever(() => storage.write(any(), any()));
-    expect(failureOrNull, isNull);
-  }, skip: true);
+  test(
+    "should fetch a list of movie reviews for a movie",
+    () async {
+      // Arrange
+      final movieId = faker.guid.guid();
+      final doc = gql(GQLQueries.getReviewsForMovieId(movieId, pageNum: 1));
+      queryOptions = QueryOptions(document: doc);
+      arrangeCommonExecutions(
+        client,
+        resultData: mockSuccessForFixture('all_review_by_id.json'),
+      );
+      // Act
+      final reviews = await sut.getMovieReviewsFor(movieId, page: 1);
+      final extract = reviews.fold((fail) => fail, (success) => success);
+      // Assert
+      verifyNever(() => storage.write(any(), any()));
+      verifyNever(() => storage.read(any()));
+      expect(extract, isA<List<MovieReviewModel>>());
+    },
+  );
 }

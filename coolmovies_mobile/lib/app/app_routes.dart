@@ -18,7 +18,9 @@ class AppRoutes {
             userProvider: context.read<UserProvider>(),
             moviesProvider: context.read<MoviesProvider>(),
           ),
-      AppRoutes.movie: (context) => const MovieDetailPage(),
+      AppRoutes.movie: (context) => MovieDetailPage(
+            provider: context.read<MoviesProvider>(),
+          ),
     };
   }
 }
